@@ -11,7 +11,7 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -36,6 +36,23 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+server.listen(80);
+// WARNING: app.listen(80) will NOT work here!
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
+io.on('connection', (socket) => {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', (data) => {
+    console.log(data);
+  });
 });
 
 module.exports = app;
