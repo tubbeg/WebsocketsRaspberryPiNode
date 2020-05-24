@@ -1,4 +1,5 @@
 $( document ).ready(() => {
+    console.log("doc is ready");
     let state = true;
     document.getElementById("myBtn").disabled = true; 
     const socket = io.connect('http://localhost');
