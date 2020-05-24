@@ -49,10 +49,11 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', (data) => {
+  //socket.emit('news', { hello: 'world' });
+  socket.on('stateTrigger', (data) => {
     console.log(data);
   });
 });
+
 
 module.exports = app;
