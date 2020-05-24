@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const Gpio = require('onoff').Gpio;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -48,12 +49,21 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+//const led = new Gpio(17, 'out');
+
 io.on('connection', (socket) => {
-  //socket.emit('news', { hello: 'world' });
   socket.on('stateTrigger', (data) => {
     console.log(data);
+    myBool = data.myState;
+    console.log(myBool);
+    //led.writeSync(boolToInt(data));
+    console.log("writing: " + boolToInt(myBool).toString());
   });
 });
+
+function boolToInt(boolVal){
+  return boolVal ? 1 : 0;
+}
 
 
 module.exports = app;
